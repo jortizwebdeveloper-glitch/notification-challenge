@@ -1,0 +1,1 @@
+from src.modules.users.infra.model import UserModel
