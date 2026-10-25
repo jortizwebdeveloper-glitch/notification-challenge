@@ -3,13 +3,22 @@ name = "take-home-challenge"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-authors = [
-    { name = "Jortiz", email = "jortiz.webdeveloper@gmail.com" }
-]
+authors = [{ name = "Jortiz", email = "jortiz.webdeveloper@gmail.com" }]
 requires-python = ">=3.14"
 dependencies = [
     "alembic>=1.20.1",
     "fastapi[standard]>=0.162.0",
+    "poethepoet>=0.49.0",
     "psycopg[binary]>=3.3.6",
     "sqlalchemy>=2.1.6",
 ]
+
+[tool.poe.env]
+PYTHONPATH = "."
+
+[tool.poe.tasks]
+"mg:current" = "alembic current"
+
+[tool.poe.tasks.seed]
+cmd = "python src/scripts/${file}.py"
+args = [{ name = "file", positional = true }]
