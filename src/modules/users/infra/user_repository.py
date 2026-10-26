@@ -3,6 +3,7 @@ from sqlalchemy import select
 
 from .user_model import UserModel
 from ..schema.ports import UserRepositoryPort
+from ..schema.exceptions import user_db_errors
 
 
 class UserRepository(UserRepositoryPort):
@@ -17,6 +18,7 @@ class UserRepository(UserRepositoryPort):
 
     def create(self, email):
         user = UserModel(email=email)
-        self._session.add(user)
-        self._session.flush()
-        return user
+        with user_db_errors():
+            self._session.add(user)
+            self._session.flush()
+            return user

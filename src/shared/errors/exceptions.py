@@ -8,3 +8,9 @@ class AppError(Exception):
 
 class ForbiddenError(AppError):
     """Sin permisos para acceder"""
+
+class AlreadyExistsError(AppError):
+    """Registro ya existente"""
+
+class InfrastructureError(AppError):
+    """Errores de infraestructura (db, server, etc)"""

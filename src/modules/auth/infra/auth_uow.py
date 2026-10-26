@@ -19,6 +19,7 @@ class AuthUOW:
     def register_auth_user(self, email: str, password: str):
         with transaction_db(self._session):
             user = self._user_repo.create(email)
+
             self._auth_repo.create(password, user.id)
             self._session.commit()
             return True

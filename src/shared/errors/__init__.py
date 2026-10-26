@@ -3,9 +3,18 @@ import logging
 from fastapi import status, FastAPI
 from fastapi.responses import JSONResponse
 
-from .exceptions import AppError, ForbiddenError
+from .exceptions import (
+    AppError,
+    ForbiddenError,
+    InfrastructureError,
+    AlreadyExistsError,
+)
 
-STATUS_BY_ERROR: dict[type[AppError], int] = {ForbiddenError: status.HTTP_403_FORBIDDEN}
+STATUS_BY_ERROR: dict[type[AppError], int] = {
+    ForbiddenError: status.HTTP_403_FORBIDDEN,
+    InfrastructureError: status.HTTP_503_SERVICE_UNAVAILABLE,
+    AlreadyExistsError: status.HTTP_409_CONFLICT,
+}
 logger = logging.getLogger(__name__)
 
 
