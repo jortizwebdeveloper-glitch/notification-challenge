@@ -1,16 +1,10 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI
 from src.modules.auth import auth
 
+from src.shared.errors import app_register_errors
 
 app = FastAPI()
 
-
-root = APIRouter(prefix="")
-
-@root.get("/")
-def get_root():
-    return "Hello world"
-
-app.include_router(root)
+app_register_errors(app)
 
 app.include_router(auth)

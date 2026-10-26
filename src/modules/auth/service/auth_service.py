@@ -1,7 +1,7 @@
 from ..schema.ports import AuthRepositoryPort
 from ..infra.auth_uow import AuthUOW
 from src.shared.auth import create_hash, verify_hash
-from src.shared.jwt import create_token_jwt
+from src.shared.jwt import create_token_jwt, jwt_error_handle
 
 
 class AuthService:
@@ -19,5 +19,5 @@ class AuthService:
 
     def signup_user(self, email: str, password: str):
         result = self._auth_uow.register_auth_user(email, create_hash(password))
-        user = self._auth_repo.find_by_email(email)
-        return user if result else None
+
+        return {"msg": "Registro relaizado exitosamente"}

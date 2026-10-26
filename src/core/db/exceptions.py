@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from contextlib import contextmanager
 
 
@@ -6,6 +7,5 @@ from contextlib import contextmanager
 def transaction_db(session: Session):
     try:
         yield
-    except Exception as e:
-        print(type(e), e)
+    except SQLAlchemyError:
         session.rollback()
