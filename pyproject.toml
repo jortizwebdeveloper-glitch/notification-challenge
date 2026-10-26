@@ -10,6 +10,8 @@ dependencies = [
     "fastapi[standard]>=0.162.0",
     "poethepoet>=0.49.0",
     "psycopg[binary]>=3.3.6",
+    "pwdlib[argon2]>=0.3.1",
+    "pyjwt>=2.15.1",
     "sqlalchemy>=2.1.6",
 ]
 
@@ -21,4 +23,8 @@ PYTHONPATH = "."
 
 [tool.poe.tasks.seed]
 cmd = "python src/scripts/${file}.py"
+args = [{ name = "file", positional = true }]
+
+[tool.poe.tasks.run]
+cmd = "python ${file}"
 args = [{ name = "file", positional = true }]

@@ -5,6 +5,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
 
     DATABASE_URL: str
+    SECRET_KET_JWT: str
 
 
 settings = Settings()

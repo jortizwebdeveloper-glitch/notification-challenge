@@ -1,4 +1,4 @@
-from src.modules.users.infra.model import UserModel
+from src.modules.users.infra.user_model import UserModel
 from src.core.db import engine
 
 from sqlalchemy.orm import Session

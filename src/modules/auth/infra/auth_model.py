@@ -1,0 +1,20 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.modules.users.infra.user_model import UserModel
+
+from src.core.db import Base
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Text, ForeignKey
+
+
+class AuthModel(Base):
+    __tablename__ = "auth"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", name="auth_user_foreing_key_constraint"),
+        unique=True,
+        index=True,
+    )
+    password: Mapped[str] = mapped_column(Text)
+    user: Mapped["UserModel"] = relationship(back_populates="auth")

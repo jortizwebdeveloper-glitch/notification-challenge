@@ -14,3 +14,9 @@ class UserRepository(UserRepositoryPort):
             select(UserModel).where(UserModel.email == email)
         ).one_or_none()
         return user
+
+    def create(self, email):
+        user = UserModel(email=email)
+        self._session.add(user)
+        self._session.flush()
+        return user
