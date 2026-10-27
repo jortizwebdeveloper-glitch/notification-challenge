@@ -18,6 +18,6 @@ class AuthService:
         return {"msg": "Accesos incorrectos"}
 
     def signup_user(self, email: str, password: str):
-        result = self._auth_uow.register_auth_user(email, create_hash(password))
+        self._auth_uow.register_auth_user(email, create_hash(password))
 
         return {"msg": "Registro relaizado exitosamente"}

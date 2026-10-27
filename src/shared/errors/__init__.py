@@ -2,6 +2,7 @@ import logging
 
 from fastapi import status, FastAPI
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 
 from .exceptions import (
     AppError,
@@ -39,5 +40,25 @@ def app_error_handle(_, exc: AppError) -> JSONResponse:
     return JSONResponse(status_code=status_code, content={"detail": msg})
 
 
+ERROR_MESSAGE = {"missing": "Campo obligatorio"}
+
+
+def request_error_handle(_, exc: RequestValidationError):
+    errors = []
+    exc_errors = exc.errors()
+    logger.error("Request Error: %s", exc_errors, exc_info=exc)
+    for err in exc_errors:
+        type_error = err["type"]
+        field = err["loc"][-1] if err["loc"] else "request"
+        msg = ERROR_MESSAGE.get(type_error)
+
+        errors.append({"field": field, "type": type_error, "msg": msg or err["msg"]})
+
+    return JSONResponse(
+        status_code=422, content={"detail": "RequestValidationError", "errors": errors}
+    )
+
+
 def app_register_errors(app: FastAPI):
     app.add_exception_handler(AppError, app_error_handle)
+    app.add_exception_handler(RequestValidationError, request_error_handle)
