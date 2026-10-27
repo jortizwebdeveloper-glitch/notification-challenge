@@ -1,7 +1,8 @@
 from ..schema.ports import AuthRepositoryPort
 from ..infra.auth_uow import AuthUOW
 from src.shared.auth import create_hash, verify_hash
-from src.shared.jwt import create_token_jwt, jwt_error_handle
+from src.shared.jwt import create_token_jwt
+from src.shared.errors import AuthenticationError
 
 
 class AuthService:
@@ -15,7 +16,7 @@ class AuthService:
         if auth and verify_hash(password, auth.password):
             return {"token": create_token_jwt(str(auth.user_id))}
 
-        return {"msg": "Accesos incorrectos"}
+        raise AuthenticationError("Accesos invalidos")
 
     def signup_user(self, email: str, password: str):
         self._auth_uow.register_auth_user(email, create_hash(password))

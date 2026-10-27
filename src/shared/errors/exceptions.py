@@ -6,11 +6,17 @@ class AppError(Exception):
         super().__init__(msg)
 
 
+class AuthenticationError(AppError):
+    """Autenticacion invalida"""
+
+
 class ForbiddenError(AppError):
     """Sin permisos para acceder"""
 
+
 class AlreadyExistsError(AppError):
     """Registro ya existente"""
+
 
 class InfrastructureError(AppError):
     """Errores de infraestructura (db, server, etc)"""

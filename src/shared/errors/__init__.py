@@ -9,12 +9,14 @@ from .exceptions import (
     ForbiddenError,
     InfrastructureError,
     AlreadyExistsError,
+    AuthenticationError
 )
 
 STATUS_BY_ERROR: dict[type[AppError], int] = {
     ForbiddenError: status.HTTP_403_FORBIDDEN,
     InfrastructureError: status.HTTP_503_SERVICE_UNAVAILABLE,
     AlreadyExistsError: status.HTTP_409_CONFLICT,
+    AuthenticationError: status.HTTP_401_UNAUTHORIZED
 }
 logger = logging.getLogger(__name__)
 

@@ -7,7 +7,6 @@ from contextlib import contextmanager
 
 from src.shared.errors.exceptions import ForbiddenError
 
-SECRET = settings.SECRET_KET_JWT
 ALGORITHM = "HS256"
 
 
@@ -22,11 +21,11 @@ def create_token_jwt(sub: str):
         "jti": str(uuid.uuid4()),
     }
 
-    return jwt.encode(payload, SECRET, algorithm=ALGORITHM)
+    return jwt.encode(payload, settings.SECRET_KEY_JWT, algorithm=ALGORITHM)
 
 
 def verify_token_jwt(token: str):
-    return jwt.decode(token, SECRET, algorithms=ALGORITHM)
+    return jwt.decode(token, settings.SECRET_KEY_JWT, algorithms=ALGORITHM)
 
 
 @contextmanager
