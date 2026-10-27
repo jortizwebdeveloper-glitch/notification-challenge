@@ -9,3 +9,36 @@ wheels/
 # Virtual environments
 .venv
 .env
+
+# ==============================
+# PYTEST
+# ==============================
+
+# Caché de pytest
+.pytest_cache/
+
+# Cachés de herramientas de testing
+.cache/
+.hypothesis/
+
+# Logs de depuración de pytest
+pytestdebug.log
+
+# ==============================
+# COBERTURA DE PRUEBAS
+# ==============================
+
+# Archivos de cobertura
+.coverage
+.coverage.*
+
+# Reportes de cobertura HTML
+htmlcov/
+
+# Reportes XML de cobertura
+coverage.xml
+
+# Reportes de pruebas
+nosetests.xml
+test-results.xml
+junit.xml

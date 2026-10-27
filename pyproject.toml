@@ -15,6 +15,15 @@ dependencies = [
     "sqlalchemy>=2.1.6",
 ]
 
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.1",
+    "pytest-cov>=7.1.0",
+]
+
+
 [tool.poe.env]
 PYTHONPATH = "."
 
@@ -28,3 +37,17 @@ args = [{ name = "file", positional = true }]
 [tool.poe.tasks.run]
 cmd = "python ${file}"
 args = [{ name = "file", positional = true }]
+
+[tool.pytest]
+minversion = "9.0"
+strict = true
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+addopts = ["-ra", "--cov", "--cov-report=term-missing", "--cov-report=html"]
+
+
+[tool.coverage.run]
+source = ["src", "main"]
+omit = ["tests/*", ".venv/*"]
+branch = true
