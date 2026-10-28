@@ -21,4 +21,4 @@ class AuthService:
     def signup_user(self, email: str, password: str):
         self._auth_uow.register_auth_user(email, create_hash(password))
 
-        return {"msg": "Registro relaizado exitosamente"}
+        return {"msg": "Registro realizado exitosamente"}

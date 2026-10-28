@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, ANY
 
 import pytest
 
@@ -57,3 +57,13 @@ def test_auth_service_signin_user_error_password_incorrect(
 
     with pytest.raises(AuthenticationError):
         auth_service.signin_user(EMAIL, "4321")
+
+
+def test_auth_service_signup_user(auth_service, auth_uow):
+    result = auth_service.signup_user(EMAIL, PASSWORD)
+    print(result)
+
+    auth_uow.register_auth_user.assert_called_once_with(EMAIL, ANY)
+    _, stored_password = auth_uow.register_auth_user.call_args.args
+    assert stored_password != PASSWORD
+    assert result == {"msg": "Registro realizado exitosamente"}
