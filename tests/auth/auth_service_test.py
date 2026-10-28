@@ -2,10 +2,6 @@ from unittest.mock import MagicMock, ANY
 
 import pytest
 
-from src.modules.auth.infra.auth_repository import AuthRepository
-from src.modules.auth.infra.auth_uow import AuthUOW
-from src.modules.auth.service.auth_service import AuthService
-
 from src.shared.auth import create_hash
 from src.shared.jwt import verify_token_jwt
 from src.shared.errors.exceptions import AuthenticationError
@@ -13,21 +9,6 @@ from src.shared.errors.exceptions import AuthenticationError
 
 EMAIL = "test@test.com"
 PASSWORD = "1234"
-
-
-@pytest.fixture
-def auth_repo():
-    return MagicMock(spec=AuthRepository)
-
-
-@pytest.fixture
-def auth_uow():
-    return MagicMock(spec=AuthUOW)
-
-
-@pytest.fixture
-def auth_service(auth_repo, auth_uow):
-    return AuthService(auth_repo, auth_uow)
 
 
 @pytest.fixture
@@ -61,7 +42,6 @@ def test_auth_service_signin_user_error_password_incorrect(
 
 def test_auth_service_signup_user(auth_service, auth_uow):
     result = auth_service.signup_user(EMAIL, PASSWORD)
-    print(result)
 
     auth_uow.register_auth_user.assert_called_once_with(EMAIL, ANY)
     _, stored_password = auth_uow.register_auth_user.call_args.args
