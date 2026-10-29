@@ -4,9 +4,9 @@ from pydantic_core import PydanticCustomError
 
 
 class SigninRequest(BaseModel):
-    email: str
+    username: str
 
-    @field_validator("email")
+    @field_validator("username")
     @classmethod
     def validate_email(cls, value: str) -> str:
         pattern = r"^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$"

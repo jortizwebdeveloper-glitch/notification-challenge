@@ -21,7 +21,7 @@ def auth_signin(
     form_data: Annotated[SigninRequest, Form()],
     service: AuthServiceDep,
 ):
-    return service.signin_user(form_data.email, form_data.password)
+    return service.signin_user(form_data.username, form_data.password)
 
 
 @auth.get("/signon")

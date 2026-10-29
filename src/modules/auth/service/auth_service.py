@@ -14,7 +14,7 @@ class AuthService:
         auth = self._auth_repo.find_by_email(email)
 
         if auth and verify_hash(password, auth.password):
-            return {"token": create_token_jwt(str(auth.user_id))}
+            return {"access_token": create_token_jwt(str(auth.user_id))}
 
         raise AuthenticationError("Accesos invalidos")
 
