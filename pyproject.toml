@@ -51,3 +51,6 @@ addopts = ["-ra", "--cov", "--cov-report=term-missing", "--cov-report=html"]
 source = ["src", "main"]
 omit = ["tests/*", ".venv/*"]
 branch = true
+
+[tool.coverage.report]
+exclude_also = ["@abstractmethod"]

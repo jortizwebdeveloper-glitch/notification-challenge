@@ -4,15 +4,37 @@ import pytest
 
 from main import app
 from src.modules.auth.service.auth_service import AuthService
-from src.modules.auth.controller.depends import get_auth_service
+from src.modules.auth.controller.depends import get_auth_service, get_current_user
+from src.shared.jwt import create_token_jwt
 
 
 @pytest.fixture
 def auth_service():
     mock = MagicMock(spec=AuthService)
     app.dependency_overrides[get_auth_service] = lambda: mock
+    app.dependency_overrides[get_current_user] = lambda: mock
     yield mock
     app.dependency_overrides.clear()
+
+
+async def test_auth_signon_status_200(client):
+    response = await client.get(
+        "/signon", headers={"Authorization": f"Bearer {create_token_jwt('1')}"}
+    )
+
+    assert response.status_code == 200
+
+
+async def test_auth_signon_status_401(client):
+    response = await client.get("/signon")
+
+    assert response.status_code == 401
+
+
+async def test_auth_signon_status_403(client):
+    response = await client.get("/signon", headers={"Authorization": "Bearer"})
+
+    assert response.status_code == 403
 
 
 async def test_auth_signup_status_200(client, auth_service):

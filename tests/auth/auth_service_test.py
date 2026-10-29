@@ -6,9 +6,28 @@ from src.shared.auth import create_hash
 from src.shared.jwt import verify_token_jwt
 from src.shared.errors.exceptions import AuthenticationError
 
+from src.modules.auth.infra.auth_repository import AuthRepository
+from src.modules.auth.infra.auth_uow import AuthUOW
+from src.modules.auth.service.auth_service import AuthService
+
 
 EMAIL = "test@test.com"
 PASSWORD = "1234"
+
+
+@pytest.fixture
+def auth_repo():
+    return MagicMock(spec=AuthRepository)
+
+
+@pytest.fixture
+def auth_uow():
+    return MagicMock(spec=AuthUOW)
+
+
+@pytest.fixture
+def auth_service(auth_repo, auth_uow):
+    return AuthService(auth_repo, auth_uow)
 
 
 @pytest.fixture

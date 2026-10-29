@@ -24,6 +24,6 @@ def auth_signin(
     return service.signin_user(form_data.email, form_data.password)
 
 
-@auth.post("/signon")
+@auth.get("/signon")
 def auth_signon(payload: AuthCurrentUserDep):
     return payload

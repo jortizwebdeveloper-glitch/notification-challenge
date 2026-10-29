@@ -32,9 +32,5 @@ def verify_token_jwt(token: str):
 def jwt_error_handle():
     try:
         yield
-    except jwt.exceptions.ExpiredSignatureError as exc:
-        raise ForbiddenError("Token expirado") from exc
-    except jwt.exceptions.InvalidTokenError as exc:
-        raise ForbiddenError("Token invalido") from exc
     except jwt.exceptions.PyJWTError as exc:
         raise ForbiddenError("Sin autorización") from exc
