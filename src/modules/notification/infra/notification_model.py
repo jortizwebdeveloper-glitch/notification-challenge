@@ -1,0 +1,22 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.modules.users.infra.user_model import UserModel
+
+from src.core.db import Base
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import String, Text, ForeignKey
+
+
+class NotificationModdel(Base):
+    __tablename__ = "notifications"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    title: Mapped[str] = mapped_column(String(50))
+    content: Mapped[str] = mapped_column(Text)
+    channel: Mapped[str] = mapped_column(String(20))
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.id", name="notification_user_foreign_key_constraint"),
+        index=True,
+    )
+    user: Mapped["UserModel"] = relationship(back_populates="notification")
