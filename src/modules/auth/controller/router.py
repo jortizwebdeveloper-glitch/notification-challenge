@@ -2,10 +2,10 @@ from typing import Annotated
 
 from fastapi import APIRouter, Form
 
-from .depends import AuthServiceDep, AuthCurrentUserDep
+from .depends import AuthServiceDep
 from ..schema.dto import SigninRequest, SignupRequest
 
-auth = APIRouter(prefix="")
+auth = APIRouter(prefix="", tags=["Auth"])
 
 
 @auth.post("/signup")
@@ -22,8 +22,3 @@ def auth_signin(
     service: AuthServiceDep,
 ):
     return service.signin_user(form_data.username, form_data.password)
-
-
-@auth.get("/signon")
-def auth_signon(payload: AuthCurrentUserDep):
-    return payload

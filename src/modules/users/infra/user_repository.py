@@ -1,5 +1,4 @@
 from sqlalchemy.orm import Session
-from sqlalchemy import select
 
 from .user_model import UserModel
 from ..schema.ports import UserRepositoryPort

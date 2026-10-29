@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session, joinedload, load_only
 from sqlalchemy import select
 
-from src.modules.auth.infra.auth_model import AuthModel
-from src.modules.users.infra.user_model import UserModel
+from src.modules.users import UserModel
+from ..infra.auth_model import AuthModel
 
 from ..schema.ports import AuthRepositoryPort
 

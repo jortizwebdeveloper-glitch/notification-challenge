@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from src.modules.users.infra.user_model import UserModel
+    from src.modules.users import UserModel
 
 from src.core.db import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship

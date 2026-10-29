@@ -1,14 +1,14 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from src.modules.users.infra.user_model import UserModel
+    from src.modules.users import UserModel
 
 from src.core.db import Base
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Text, ForeignKey
 
 
-class NotificationModdel(Base):
+class NotificationModel(Base):
     __tablename__ = "notifications"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -19,4 +19,4 @@ class NotificationModdel(Base):
         ForeignKey("users.id", name="notification_user_foreign_key_constraint"),
         index=True,
     )
-    user: Mapped["UserModel"] = relationship(back_populates="notification")
+    user: Mapped["UserModel"] = relationship(back_populates="notifications")

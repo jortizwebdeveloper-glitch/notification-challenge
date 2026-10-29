@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from ..schema.ports import AuthRepositoryPort
-from src.modules.users.schema.ports import UserRepositoryPort
+
+from src.modules.users import UserRepositoryPort
 from src.core.db.exceptions import transaction_db
 
 

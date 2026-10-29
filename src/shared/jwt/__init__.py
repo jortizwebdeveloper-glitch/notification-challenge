@@ -1,6 +1,8 @@
 import jwt
 import uuid
 
+from typing import TypedDict
+
 from src.shared.settings import settings
 from datetime import datetime, timedelta, timezone
 from contextlib import contextmanager
@@ -10,11 +12,18 @@ from src.shared.errors.exceptions import ForbiddenError
 ALGORITHM = "HS256"
 
 
+class TokenPayload(TypedDict):
+    sub: str
+    iat: datetime
+    exp: datetime
+    jti: str
+
+
 def create_token_jwt(sub: str):
     now = datetime.now(timezone.utc)
     delta = now + timedelta(minutes=15)
 
-    payload = {
+    payload: TokenPayload = {
         "sub": sub,
         "iat": now,
         "exp": delta,
@@ -24,7 +33,7 @@ def create_token_jwt(sub: str):
     return jwt.encode(payload, settings.SECRET_KEY_JWT, algorithm=ALGORITHM)
 
 
-def verify_token_jwt(token: str):
+def verify_token_jwt(token: str) -> TokenPayload:
     return jwt.decode(token, settings.SECRET_KEY_JWT, algorithms=ALGORITHM)
 
 

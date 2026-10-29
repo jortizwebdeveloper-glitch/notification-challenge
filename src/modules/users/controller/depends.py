@@ -2,14 +2,9 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from ..schema.ports import UserRepositoryPort
-from ..infra.user_repository import UserRepository
+from ..infra.user_repository import UserRepository, UserRepositoryPort
 
-from sqlalchemy.orm import Session
-
-from src.core.db import get_session
-
-SessionDep = Annotated[Session, Depends(get_session)]
+from src.shared.depends import SessionDep
 
 
 def get_user_repository(session: SessionDep):
