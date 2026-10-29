@@ -13,20 +13,26 @@ from src.core.db import Base
 from src.modules.auth.infra.auth_model import AuthModel  # noqa: F401
 from src.modules.users.infra.user_model import UserModel  # noqa: F401
 
+from testcontainers.community.postgres import PostgresContainer
+from alembic import command
+from alembic.config import Config
+
+
+@pytest.fixture(scope="session")
+def postgres_url():
+    with PostgresContainer("postgres:16", driver="psycopg") as pg:
+        yield pg.get_connection_url()
 
 
 @pytest.fixture
-def engine():
-    engine = create_engine("sqlite://")  # en memoria
+def engine(postgres_url):
+    alembic_cfg = Config("alembic.ini")
+    alembic_cfg.set_main_option("sqlalchemy.url", postgres_url)
+    command.upgrade(alembic_cfg, "head")
 
-    # SQLite no aplica llaves foráneas por defecto
-    @event.listens_for(engine, "connect")
-    def _enable_fk(dbapi_connection, _):
-        dbapi_connection.execute("PRAGMA foreign_keys=ON")
+    engine = create_engine(postgres_url)  # en memoria
 
-    Base.metadata.create_all(engine)
     yield engine
-    Base.metadata.drop_all(engine)
     engine.dispose()
 
 
@@ -50,4 +56,3 @@ def jwt_secret(monkeypatch):
     monkeypatch.setattr(
         settings, "SECRET_KEY_JWT", "secret_jwt_secret_jwt_secret_jwt_secret_jwt"
     )
-
