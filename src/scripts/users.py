@@ -1,11 +1,11 @@
 import random
-from src.core.db.models import UserModel, AuthModel, NotificationModel
-from src.shared.auth import create_hash
+
+from sqlalchemy import delete
+from sqlalchemy.orm import Session
 
 from src.core.db import engine
-
-from sqlalchemy.orm import Session
-from sqlalchemy import delete
+from src.core.db.models import AuthModel, NotificationModel, UserModel
+from src.shared.auth import create_hash
 
 USERS_MOKCS = [
     {"email": "jortiz@mail.com", "password": "123456"},
