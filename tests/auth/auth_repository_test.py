@@ -1,12 +1,7 @@
 import pytest
 
-from src.modules.auth.infra.auth_model import AuthModel
-from src.modules.users.infra.user_model import UserModel
-
 from src.modules.auth.infra.auth_repository import AuthRepository
-
-from tests.helpers import addUser, addAuth
-
+from tests.helpers import addAuth, addUser
 
 EMAIL = "test@email.com"
 PASSWORD = "hash"

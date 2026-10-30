@@ -1,15 +1,13 @@
-from unittest.mock import MagicMock, ANY
+from unittest.mock import ANY, MagicMock
 
 import pytest
-
-from src.shared.auth import create_hash
-from src.shared.jwt import verify_token_jwt
-from src.shared.errors.exceptions import AuthenticationError
 
 from src.modules.auth.infra.auth_repository import AuthRepository
 from src.modules.auth.infra.auth_uow import AuthUOW
 from src.modules.auth.service.auth_service import AuthService
-
+from src.shared.auth import create_hash
+from src.shared.errors.exceptions import AuthenticationError
+from src.shared.jwt import verify_token_jwt
 
 EMAIL = "test@test.com"
 PASSWORD = "1234"
@@ -39,7 +37,7 @@ def test_auth_service_signin_user_successful(auth_service, auth_repo, user):
     auth_repo.find_by_email.side_effect = lambda email: user if EMAIL == email else None
 
     result = auth_service.signin_user(EMAIL, PASSWORD)
-    payload = verify_token_jwt(result["token"])
+    payload = verify_token_jwt(result["access_token"])
     assert payload["sub"] == "1"
 
 

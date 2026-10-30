@@ -1,21 +1,15 @@
 import pytest
-from httpx import ASGITransport, AsyncClient
-
-from main import app
-from src.shared.settings import settings
-
-from sqlalchemy import create_engine, event
-from sqlalchemy.orm import Session
-
-from src.core.db import Base
-
-# Importar los modelos es obligatorio: así se registran en Base.metadata
-from src.modules.auth.infra.auth_model import AuthModel  # noqa: F401
-from src.modules.users.infra.user_model import UserModel  # noqa: F401
-
-from testcontainers.community.postgres import PostgresContainer
 from alembic import command
 from alembic.config import Config
+from httpx import ASGITransport, AsyncClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from testcontainers.community.postgres import PostgresContainer
+
+# Importar los modelos es obligatorio: así se registran en Base.metadata
+import src.core.db.models  # noqa: F401
+from main import app
+from src.shared.settings import settings
 
 
 @pytest.fixture(scope="session")

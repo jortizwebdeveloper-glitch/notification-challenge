@@ -1,12 +1,11 @@
-import pytest
 from unittest.mock import MagicMock
 
-from src.modules.auth.infra.auth_uow import AuthUOW
-from src.modules.auth.infra.auth_repository import AuthRepository
-from src.modules.users.infra.user_repository import UserRepository
-
+import pytest
 from sqlalchemy.orm import Session
 
+from src.modules.auth.infra.auth_repository import AuthRepository
+from src.modules.auth.infra.auth_uow import AuthUOW
+from src.modules.users.infra.user_repository import UserRepository
 
 EMAIL = "test@email.com"
 PASSWORD = "hash"

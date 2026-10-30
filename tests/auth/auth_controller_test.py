@@ -3,38 +3,16 @@ from unittest.mock import MagicMock
 import pytest
 
 from main import app
+from src.modules.auth.controller.depends import get_auth_service
 from src.modules.auth.service.auth_service import AuthService
-from src.modules.auth.controller.depends import get_auth_service, get_current_user
-from src.shared.jwt import create_token_jwt
 
 
 @pytest.fixture
 def auth_service():
     mock = MagicMock(spec=AuthService)
     app.dependency_overrides[get_auth_service] = lambda: mock
-    app.dependency_overrides[get_current_user] = lambda: mock
     yield mock
     app.dependency_overrides.clear()
-
-
-async def test_auth_signon_status_200(client):
-    response = await client.get(
-        "/signon", headers={"Authorization": f"Bearer {create_token_jwt('1')}"}
-    )
-
-    assert response.status_code == 200
-
-
-async def test_auth_signon_status_401(client):
-    response = await client.get("/signon")
-
-    assert response.status_code == 401
-
-
-async def test_auth_signon_status_403(client):
-    response = await client.get("/signon", headers={"Authorization": "Bearer"})
-
-    assert response.status_code == 403
 
 
 async def test_auth_signup_status_200(client, auth_service):
@@ -136,7 +114,7 @@ async def test_auth_signin_status_200(client, auth_service):
 
     auth_service.signin_user.return_value = {"token": token}
 
-    data = {"email": "test@test.com", "password": "Password@123"}
+    data = {"username": "test@test.com", "password": "Password@123"}
     response = await client.post("/signin", data=data)
     assert response.status_code == 200
     assert "token" in response.json()
@@ -144,7 +122,7 @@ async def test_auth_signin_status_200(client, auth_service):
 
 async def test_auth_signin_status_422_without_fields(client):
     data = {}
-    response = await client.post("/signup", data=data)
+    response = await client.post("/signin", data=data)
     assert response.status_code == 422
 
     json = response.json()
@@ -157,7 +135,7 @@ async def test_auth_signin_status_422_without_fields(client):
 
     assert len(errors) == 2
 
-    fields = ["email", "password"]
+    fields = ["username", "password"]
 
     for err in errors:
         assert err["field"] in fields
@@ -171,7 +149,7 @@ async def test_auth_signin_status_422_without_fields(client):
 
 
 async def test_auth_signin_status_422_invalid_email_format(client):
-    data = {"email": "test", "password": "Password@132"}
+    data = {"username": "test", "password": "Password@132"}
     response = await client.post("/signin", data=data)
     assert response.status_code == 422
 
@@ -185,7 +163,7 @@ async def test_auth_signin_status_422_invalid_email_format(client):
 
     assert len(errors) == 1
 
-    fields = ["email"]
+    fields = ["username"]
 
     for err in errors:
         assert err["field"] in fields

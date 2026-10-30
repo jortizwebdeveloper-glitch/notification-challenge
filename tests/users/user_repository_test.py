@@ -1,8 +1,7 @@
 import pytest
 
-from src.modules.users.infra.user_repository import UserRepository
 from src.modules.users.infra.user_model import UserModel
-
+from src.modules.users.infra.user_repository import UserRepository
 from src.shared.errors.exceptions import AlreadyExistsError
 from tests.helpers import addUser
 
