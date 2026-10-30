@@ -1,16 +1,15 @@
 from typing import Annotated, get_args
 
+from fastapi import Depends
+
+from src.shared.auth import CurrentUserDep
+from src.shared.depends import SessionDep
+
 from ..infra.notification_repository import (
     NotificationRepository,
     NotificationRepositoryPort,
 )
 from ..service.notification_service import NotificationService
-
-
-from fastapi import Depends
-
-from src.shared.depends import SessionDep
-from src.shared.auth import CurrentUserDep
 
 _, current_user_depends = get_args(CurrentUserDep)
 

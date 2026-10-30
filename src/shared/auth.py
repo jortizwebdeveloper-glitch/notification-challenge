@@ -1,10 +1,10 @@
-from pwdlib import PasswordHash
 from typing import Annotated
 
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
+from pwdlib import PasswordHash
 
-from .jwt import jwt_error_handle, verify_token_jwt, TokenPayload
+from .jwt import TokenPayload, jwt_error_handle, verify_token_jwt
 
 password_hash = PasswordHash.recommended()
 

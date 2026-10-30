@@ -1,6 +1,7 @@
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
 from contextlib import contextmanager
+
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import Session
 
 from src.shared.errors.exceptions import InfrastructureError
 

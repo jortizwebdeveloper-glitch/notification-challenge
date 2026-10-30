@@ -2,9 +2,9 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from ..infra.user_repository import UserRepository, UserRepositoryPort
-
 from src.shared.depends import SessionDep
+
+from ..infra.user_repository import UserRepository, UserRepositoryPort
 
 
 def get_user_repository(session: SessionDep):

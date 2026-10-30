@@ -1,8 +1,9 @@
 from sqlalchemy.orm import Session
-from ..schema.ports import AuthRepositoryPort
 
-from src.modules.users import UserRepositoryPort
 from src.core.db.exceptions import transaction_db
+from src.modules.users import UserRepositoryPort
+
+from ..schema.ports import AuthRepositoryPort
 
 
 class AuthUOW:

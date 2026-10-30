@@ -2,13 +2,12 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from ..infra.auth_uow import AuthUOW
-from ..infra.auth_repository import AuthRepository, AuthRepositoryPort
-from ..service.auth_service import AuthService
-
 from src.modules.users import UserRepoDep
-
 from src.shared.depends import SessionDep
+
+from ..infra.auth_repository import AuthRepository, AuthRepositoryPort
+from ..infra.auth_uow import AuthUOW
+from ..service.auth_service import AuthService
 
 
 def get_auth_repository(session: SessionDep):

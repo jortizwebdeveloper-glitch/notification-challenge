@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Form
 
-from .depends import AuthServiceDep
 from ..schema.dto import SigninRequest, SignupRequest
+from .depends import AuthServiceDep
 
 auth = APIRouter(prefix="", tags=["Auth"])
 

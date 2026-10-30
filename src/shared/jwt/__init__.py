@@ -1,13 +1,11 @@
-import jwt
 import uuid
-
+from contextlib import contextmanager
+from datetime import UTC, datetime, timedelta
 from typing import TypedDict
 
-from src.shared.settings import settings
-from datetime import datetime, timedelta, timezone
-from contextlib import contextmanager
-
+import jwt
 from src.shared.errors.exceptions import ForbiddenError
+from src.shared.settings import settings
 
 ALGORITHM = "HS256"
 
@@ -20,8 +18,8 @@ class TokenPayload(TypedDict):
 
 
 def create_token_jwt(sub: str):
-    now = datetime.now(timezone.utc)
-    delta = now + timedelta(minutes=15)
+    now = datetime.now(UTC)
+    delta = now + timedelta(minutes=60)
 
     payload: TokenPayload = {
         "sub": sub,

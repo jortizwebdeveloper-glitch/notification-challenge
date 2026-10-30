@@ -3,9 +3,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from src.modules.users import UserModel
 
-from src.core.db import Base
+from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import String, Text, ForeignKey
+
+from src.core.db import Base
 
 
 class NotificationModel(Base):
@@ -19,4 +20,4 @@ class NotificationModel(Base):
         ForeignKey("users.id", name="notification_user_foreign_key_constraint"),
         index=True,
     )
-    user: Mapped["UserModel"] = relationship(back_populates="notifications")
+    user: Mapped[UserModel] = relationship(back_populates="notifications")

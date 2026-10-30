@@ -1,8 +1,9 @@
-from ..schema.ports import AuthRepositoryPort
-from ..infra.auth_uow import AuthUOW
 from src.shared.auth import create_hash, verify_hash
-from src.shared.jwt import create_token_jwt
 from src.shared.errors import AuthenticationError
+from src.shared.jwt import create_token_jwt
+
+from ..infra.auth_uow import AuthUOW
+from ..schema.ports import AuthRepositoryPort
 
 
 class AuthService:

@@ -3,9 +3,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from src.modules.users import UserModel
 
-from src.core.db import Base
+from sqlalchemy import ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from sqlalchemy import Text, ForeignKey
+
+from src.core.db import Base
 
 
 class AuthModel(Base):
@@ -17,4 +18,4 @@ class AuthModel(Base):
         index=True,
     )
     password: Mapped[str] = mapped_column(Text)
-    user: Mapped["UserModel"] = relationship(back_populates="auth")
+    user: Mapped[UserModel] = relationship(back_populates="auth")

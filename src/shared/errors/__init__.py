@@ -1,22 +1,23 @@
 import logging
 
-from fastapi import status, FastAPI
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, status
 from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 
 from .exceptions import (
+    AlreadyExistsError,
     AppError,
+    AuthenticationError,
     ForbiddenError,
     InfrastructureError,
-    AlreadyExistsError,
-    AuthenticationError
 )
+from .response import ErrorsType
 
 STATUS_BY_ERROR: dict[type[AppError], int] = {
     ForbiddenError: status.HTTP_403_FORBIDDEN,
     InfrastructureError: status.HTTP_503_SERVICE_UNAVAILABLE,
     AlreadyExistsError: status.HTTP_409_CONFLICT,
-    AuthenticationError: status.HTTP_401_UNAUTHORIZED
+    AuthenticationError: status.HTTP_401_UNAUTHORIZED,
 }
 logger = logging.getLogger(__name__)
 
@@ -46,7 +47,7 @@ ERROR_MESSAGE = {"missing": "Campo obligatorio"}
 
 
 def request_error_handle(_, exc: RequestValidationError):
-    errors = []
+    errors: list[ErrorsType] = []
     exc_errors = exc.errors()
     logger.error("Request Error: %s", exc_errors, exc_info=exc)
     for err in exc_errors:

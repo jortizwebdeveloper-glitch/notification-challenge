@@ -1,5 +1,6 @@
-from sqlalchemy.exc import IntegrityError
 from contextlib import contextmanager
+
+from sqlalchemy.exc import IntegrityError
 
 from src.shared.errors.exceptions import AlreadyExistsError
 
