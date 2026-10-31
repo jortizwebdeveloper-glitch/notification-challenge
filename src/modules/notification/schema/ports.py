@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from ..infra.notification_model import NotificationModel
+from ..infra.model import NotificationModel
 
 
 class NotificationRepositoryPort(ABC):
