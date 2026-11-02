@@ -1,14 +1,9 @@
-from enum import StrEnum
 from typing import Annotated, Any, TypedDict
 
 from pydantic import BaseModel, BeforeValidator, Field
 from pydantic_core import PydanticCustomError
 
-
-class Channel(StrEnum):
-    EMAIL = "email"
-    SMS = ("sms",)
-    PUSH_NOTIFICATION = "push_notification"
+from src.shared.channels import Channel
 
 
 def _validate_channel(value: Any):

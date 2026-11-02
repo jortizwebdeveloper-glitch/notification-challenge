@@ -1,4 +1,3 @@
-
 from sqlalchemy import delete, insert, select, update
 from sqlalchemy.orm import Session, defer
 
@@ -10,6 +9,9 @@ from .model import NotificationModel
 class NotificationRepository(NotificationRepositoryPort):
     def __init__(self, session: Session):
         self._session = session
+
+    def find_by_id(self, id):
+        return self._session.get(NotificationModel, id)
 
     def find_all_by_user_id(self, user_id: int):
         stmt = (
