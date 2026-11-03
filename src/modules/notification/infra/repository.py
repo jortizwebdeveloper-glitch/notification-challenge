@@ -28,8 +28,8 @@ class NotificationRepository(NotificationRepositoryPort):
             .options(defer(NotificationModel.user_id))
             .where(NotificationModel.user_id == user_id, NotificationModel.id == id)
         )
-        rows = self._session.scalars(stmt).one_or_none()
-        return rows
+        row = self._session.scalars(stmt).one_or_none()
+        return row
 
     def create(self, body: NotificationData, user_id):
         stmt = (

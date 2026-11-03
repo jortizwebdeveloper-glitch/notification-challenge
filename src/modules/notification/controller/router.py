@@ -17,8 +17,11 @@ notification = APIRouter(
 
 
 @notification.get("/send/{id}")
-def send_notification(id: int, noti_service: NotiServiceDep):
-    return noti_service.send(id)
+async def send_notification(
+    payload: CurrentUserDep, id: int, noti_service: NotiServiceDep
+):
+    result = await noti_service.send(id, int(payload["sub"]))
+    return result
 
 
 @notification.get("")

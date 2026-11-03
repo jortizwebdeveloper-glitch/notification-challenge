@@ -1,5 +1,6 @@
 import re
-from typing import Annotated
+from enum import StrEnum
+from typing import Annotated, Any
 
 from pydantic import BeforeValidator
 from pydantic_core import PydanticCustomError
@@ -49,3 +50,37 @@ def _validate_password(value: str) -> str:
 
 
 PasswordField = Annotated[str, BeforeValidator(_validate_password)]
+
+
+def _validate_toke_fcm(value: str) -> str:
+    pattern = r"^[A-Za-z0-9_-]{8,}:[A-Za-z0-9_-]{50,}$"
+
+    if not re.fullmatch(pattern, value):
+        raise PydanticCustomError(
+            "invalid_token_fcm_format",
+            "Formato de token invalido",
+            {"token": value},
+        )
+
+    return value
+
+
+TokenFcmField = Annotated[str, BeforeValidator(_validate_toke_fcm)]
+
+
+class Channel(StrEnum):
+    EMAIL = "email"
+    SMS = "sms"
+    PUSH_NOTIFICATION = "push"
+
+
+def _validate_channel(value: Any):
+    try:
+        return Channel(value)
+    except ValueError:
+        raise PydanticCustomError(
+            "invalid_channel", "Canal invalido", {"channle": value}
+        )
+
+
+ChannelField = Annotated[Channel, BeforeValidator(_validate_channel)]

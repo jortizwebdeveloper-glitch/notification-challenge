@@ -10,6 +10,7 @@ from .exceptions import (
     AuthenticationError,
     ForbiddenError,
     InfrastructureError,
+    NotFoundError,
 )
 from .response import ErrorsType
 
@@ -18,6 +19,7 @@ STATUS_BY_ERROR: dict[type[AppError], int] = {
     InfrastructureError: status.HTTP_503_SERVICE_UNAVAILABLE,
     AlreadyExistsError: status.HTTP_409_CONFLICT,
     AuthenticationError: status.HTTP_401_UNAUTHORIZED,
+    NotFoundError: status.HTTP_404_NOT_FOUND,
 }
 logger = logging.getLogger(__name__)
 
@@ -46,7 +48,7 @@ def app_error_handle(_, exc: AppError) -> JSONResponse:
 ERROR_MESSAGE = {"missing": "Campo obligatorio"}
 
 
-def request_error_handle(_, exc: ValidationError):
+def validation_error_handle(exc: ValidationError) -> list[ErrorsType]:
     errors: list[ErrorsType] = []
     exc_errors = exc.errors()
     logger.error("Request Error: %s", exc_errors, exc_info=exc)
@@ -57,6 +59,11 @@ def request_error_handle(_, exc: ValidationError):
 
         errors.append({"field": field, "type": type_error, "msg": msg or err["msg"]})
 
+    return errors
+
+
+def request_error_handle(_, exc: ValidationError):
+    errors = validation_error_handle(exc)
     return JSONResponse(
         status_code=422, content={"detail": "ValidationError", "errors": errors}
     )

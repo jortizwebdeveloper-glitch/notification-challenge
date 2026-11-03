@@ -2,6 +2,7 @@ from typing import Annotated, get_args
 
 from fastapi import Depends
 
+from src.core.arq import ArqDep
 from src.shared.auth import CurrentUserDep
 from src.shared.depends import SessionDep
 
@@ -18,8 +19,8 @@ def get_noti_repository(session: SessionDep):
     return NotificationRepository(session)
 
 
-def get_noti_service(repository: NotiRepositoryDep):
-    return NotificationService(notitfication_repository=repository)
+def get_noti_service(repository: NotiRepositoryDep, arq: ArqDep):
+    return NotificationService(notitfication_repository=repository, arq=arq)
 
 
 NotiRepositoryDep = Annotated[NotificationRepositoryPort, Depends(get_noti_repository)]

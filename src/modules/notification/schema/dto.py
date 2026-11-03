@@ -1,19 +1,8 @@
-from typing import Annotated, Any, TypedDict
+from typing import Annotated, TypedDict
 
-from pydantic import BaseModel, BeforeValidator, Field
-from pydantic_core import PydanticCustomError
+from pydantic import BaseModel, Field
 
-from src.shared.channels import Channel
-
-
-def _validate_channel(value: Any):
-    try:
-        return Channel(value)
-    except ValueError:
-        raise PydanticCustomError(
-            "invalid_channel", "Canal invalido", {"channle": value}
-        )
-
+from src.shared.channels import Channel, ChannelField
 
 TitleField = Annotated[
     str, Field(max_length=50, min_length=5, examples=["Bienvenido a la plataforma"])
@@ -21,7 +10,6 @@ TitleField = Annotated[
 ContentlField = Annotated[
     str, Field(examples=["Gracias por registrarte. Completa tu perfil para empezar."])
 ]
-ChannelField = Annotated[Channel, BeforeValidator(_validate_channel)]
 
 
 class CreateNotificationRequest(BaseModel):

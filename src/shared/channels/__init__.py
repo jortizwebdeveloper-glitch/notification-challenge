@@ -1,23 +1,23 @@
+import asyncio
 from abc import ABC, abstractmethod
-from enum import StrEnum
 
 import markdown
 from pydantic import BaseModel, Field, field_validator
 
-from ..validate_fields import EmailField, PhoneField
-
-
-class Channel(StrEnum):
-    EMAIL = "email"
-    SMS = "sms"
-    PUSH_NOTIFICATION = "push_notification"
+from ..validate_fields import (
+    Channel,
+    ChannelField,
+    EmailField,
+    PhoneField,
+    TokenFcmField,
+)
 
 
 class ChannelData(BaseModel):
-    title: str
-    content: str
-    channel: Channel
-    to: str
+    title: str | None = None
+    content: str | None = None
+    channel: ChannelField | None = None
+    to: str | None = None
 
 
 class EmailModel(BaseModel):
@@ -37,60 +37,59 @@ class SMSModel(BaseModel):
     to: PhoneField | None = None
 
 
+class PushModel(BaseModel):
+    title: str
+    content: str = Field(max_length=160)
+    to: TokenFcmField | None = None
+
+
 class BaseChannel(ABC):
     """Clase base de un canal"""
 
-    @abstractmethod
-    def send(self) -> str:
+    def __init__(self, row: ChannelData):
+        self._row = row
+
+    @property
+    def src(self) -> str:
         pass
+
+    async def send(self):
+        payload = await asyncio.to_thread(self.validate, self._row)
+        return payload
 
     @abstractmethod
     def validate(self, data: ChannelData):
         pass
 
+    def open_src(self):
+        with open(self.src, "r", encoding="utf8") as src:
+            return src.read().splitlines()
+
 
 class EmailChannel(BaseChannel):
-    def __init__(self, row: ChannelData):
-        self._row = row
-
-    def send(self):
-        payload = self.validate(self._row)
-        return payload
+    src = "src/core/txt/email.txt"
 
     def validate(self, row):
         return EmailModel(title=row.title, content=row.content, to=row.to)
 
 
 class SMSChannel(BaseChannel):
-    def __init__(self, row: ChannelData):
-        self._row = row
-
-    def send(self):
-        payload = self.validate(self._row)
-        return payload
+    src = "src/core/txt/sms.txt"
 
     def validate(self, row):
         return SMSModel(title=row.title, content=row.content, to=row.to)
 
 
 class PushNotificationChannel(BaseChannel):
-    def send(self):
-        return "Send Push Notification"
+    src = "src/core/txt/push.txt"
+
+    def validate(self, row):
+        return PushModel(title=row.title, content=row.content, to=row.to)
 
 
-channels = {Channel.EMAIL: EmailChannel, Channel.SMS: SMSChannel}
+channels = {Channel.EMAIL: EmailChannel, Channel.SMS: SMSChannel, Channel.PUSH_NOTIFICATION: PushNotificationChannel}
 
 
-def get_channel(row: ChannelData):
+def get_channel(row: ChannelData) -> BaseChannel:
     C = channels.get(row.channel)
     return C(row) if C else None
-
-
-# email = {
-#     "channel": "email",
-#     "title": "Novedades de nuestro boletín",
-#     "content": "# Bienvenido\n\nGracias por ser parte de nuestra comunidad.\n\n## Qué encontrarás\n\n- Noticias y actualizaciones\n- Consejos útiles\n- Recursos recomendados\n\n| Sección | Descripción |\n|---|---|\n| Novedades | Resumen de lo más reciente |\n| Guías | Contenido práctico paso a paso |\n\n[Conoce más](https://ejemplo.com)\n\nUn saludo cordial,\n\n**El equipo**",
-# }
-
-
-# print(markdown.markdown(email["content"]))

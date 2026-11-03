@@ -14,6 +14,10 @@ class ForbiddenError(AppError):
     """Sin permisos para acceder"""
 
 
+class NotFoundError(AppError):
+    """No encontrado"""
+
+
 class AlreadyExistsError(AppError):
     """Registro ya existente"""
 
