@@ -2,9 +2,8 @@ from typing import Annotated, get_args
 
 from fastapi import Depends
 
-from src.core.arq import ArqDep
 from src.shared.auth import CurrentUserDep
-from src.shared.depends import SessionDep
+from src.shared.depends import ArqDep, SessionDep
 
 from ..infra.repository import (
     NotificationRepository,

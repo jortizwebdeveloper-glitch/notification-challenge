@@ -1,6 +1,7 @@
 import logging
 
 from fastapi import FastAPI, status
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic_core import ValidationError
 
@@ -48,7 +49,7 @@ def app_error_handle(_, exc: AppError) -> JSONResponse:
 ERROR_MESSAGE = {"missing": "Campo obligatorio"}
 
 
-def validation_error_handle(exc: ValidationError) -> list[ErrorsType]:
+def validation_error_handle(exc: ValidationError | RequestValidationError) -> list[ErrorsType]:
     errors: list[ErrorsType] = []
     exc_errors = exc.errors()
     logger.error("Request Error: %s", exc_errors, exc_info=exc)
@@ -71,5 +72,5 @@ def request_error_handle(_, exc: ValidationError):
 
 def app_register_errors(app: FastAPI):
     app.add_exception_handler(AppError, app_error_handle)
-    # app.add_exception_handler(RequestValidationError, request_error_handle)
+    app.add_exception_handler(RequestValidationError, request_error_handle)
     app.add_exception_handler(ValidationError, request_error_handle)

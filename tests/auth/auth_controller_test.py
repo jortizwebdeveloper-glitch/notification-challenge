@@ -32,7 +32,7 @@ async def test_auth_signup_status_422_without_fields(client):
 
     json = response.json()
     assert "detail" in json
-    assert json["detail"] == "RequestValidationError"
+    assert json["detail"] == "ValidationError"
 
     assert "errors" in json
 
@@ -60,7 +60,7 @@ async def test_auth_signup_status_422_invalid_email_format(client):
 
     json = response.json()
     assert "detail" in json
-    assert json["detail"] == "RequestValidationError"
+    assert json["detail"] == "ValidationError"
 
     assert "errors" in json
 
@@ -88,7 +88,7 @@ async def test_auth_signup_status_422_invalid_password_format(client):
 
     json = response.json()
     assert "detail" in json
-    assert json["detail"] == "RequestValidationError"
+    assert json["detail"] == "ValidationError"
 
     assert "errors" in json
 
@@ -127,7 +127,7 @@ async def test_auth_signin_status_422_without_fields(client):
 
     json = response.json()
     assert "detail" in json
-    assert json["detail"] == "RequestValidationError"
+    assert json["detail"] == "ValidationError"
 
     assert "errors" in json
 
@@ -155,7 +155,7 @@ async def test_auth_signin_status_422_invalid_email_format(client):
 
     json = response.json()
     assert "detail" in json
-    assert json["detail"] == "RequestValidationError"
+    assert json["detail"] == "ValidationError"
 
     assert "errors" in json
 
