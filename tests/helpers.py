@@ -1,5 +1,5 @@
-from src.modules.auth.infra.auth_model import AuthModel
-from src.modules.users.infra.user_model import UserModel
+from src.modules.auth import AuthModel
+from src.modules.users import UserModel
 
 
 def addUser(session, email):

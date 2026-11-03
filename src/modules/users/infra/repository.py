@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from ..schema.exceptions import user_db_errors
 from ..schema.ports import UserRepositoryPort
-from .user_model import UserModel
+from .model import UserModel
 
 
 class UserRepository(UserRepositoryPort):

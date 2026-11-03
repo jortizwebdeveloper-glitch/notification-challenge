@@ -5,9 +5,9 @@ from fastapi import Depends
 from src.modules.users import UserRepoDep
 from src.shared.depends import SessionDep
 
-from ..infra.auth_repository import AuthRepository, AuthRepositoryPort
-from ..infra.auth_uow import AuthUOW
-from ..service.auth_service import AuthService
+from ..infra.repository import AuthRepository, AuthRepositoryPort
+from ..infra.uow import AuthUOW
+from ..service.service import AuthService
 
 
 def get_auth_repository(session: SessionDep):

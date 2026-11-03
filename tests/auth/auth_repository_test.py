@@ -1,6 +1,6 @@
 import pytest
 
-from src.modules.auth.infra.auth_repository import AuthRepository
+from src.modules.auth import AuthRepository
 from tests.helpers import addAuth, addUser
 
 EMAIL = "test@email.com"

@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session, joinedload, load_only
 
 from src.modules.users import UserModel
 
-from ..infra.auth_model import AuthModel
 from ..schema.ports import AuthRepositoryPort
+from .model import AuthModel
 
 
 class AuthRepository(AuthRepositoryPort):

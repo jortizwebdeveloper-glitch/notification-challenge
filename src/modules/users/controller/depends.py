@@ -4,7 +4,7 @@ from fastapi import Depends
 
 from src.shared.depends import SessionDep
 
-from ..infra.user_repository import UserRepository, UserRepositoryPort
+from ..infra.repository import UserRepository, UserRepositoryPort
 
 
 def get_user_repository(session: SessionDep):

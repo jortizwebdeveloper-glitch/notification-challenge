@@ -3,8 +3,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from main import app
-from src.modules.auth.controller.depends import get_auth_service
-from src.modules.auth.service.auth_service import AuthService
+from src.modules.auth import AuthService, get_auth_service
 
 
 @pytest.fixture

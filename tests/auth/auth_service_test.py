@@ -2,9 +2,7 @@ from unittest.mock import ANY, MagicMock
 
 import pytest
 
-from src.modules.auth.infra.auth_repository import AuthRepository
-from src.modules.auth.infra.auth_uow import AuthUOW
-from src.modules.auth.service.auth_service import AuthService
+from src.modules.auth import AuthRepository, AuthService, AuthUOW
 from src.shared.auth import create_hash
 from src.shared.errors.exceptions import AuthenticationError
 from src.shared.jwt import verify_token_jwt
