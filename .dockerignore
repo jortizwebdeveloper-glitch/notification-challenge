@@ -1,0 +1,33 @@
+# Entorno virtual local
+.venv/
+
+# Archivos generados por Python
+__pycache__/
+*.pyc
+
+# Caches de herramientas
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Control de versiones
+.git/
+.gitignore
+
+# Variables de entorno y secretos
+.env
+.env.*
+
+# Archivos de Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Editores y sistema operativo
+.vscode/
+.idea/
+.DS_Store
+
+README.md

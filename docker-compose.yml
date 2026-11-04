@@ -1,8 +1,73 @@
+x-base: &base
+  build:
+    context: .
+    target: runtime
+  image: take-home-image
+
+x-env: &env
+  DATABASE_URL: postgresql+psycopg://${DB_USER}:${DB_PASS}@db:5432/${DB_NAME}
+  SECRET_KEY_JWT: ${SECRET_KEY_JWT}
+
 services:
+  api:
+    <<: *base
+    environment:
+      <<: *env
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+  seed:
+    <<: *base
+    environment:
+      <<: *env
+    command: ["poe", "seed", "users"]
+    profiles: ["seed"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+  migrate:
+    <<: *base
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      <<: *env
+    depends_on:
+      db:
+        condition: service_healthy
+    profiles: ["migrate"]
+  
+  test:
+    build:
+      context: .
+      target: test
+    environment:
+      TESTCONTAINERS_HOST_OVERRIDE: host.docker.internal
+      <<: *env
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    profiles: ["test"]
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data
@@ -12,20 +77,6 @@ services:
       timeout: 3s
       retries: 5
 
-# worker:
-#   build: .
-#   command: arq app.worker.WorkerSettings
-#   environment:
-#     REDIS_HOST: redis
-#   depends_on:
-#     redis:
-#       condition: service_healthy
-#   healthcheck:
-#     test: ["CMD", "arq", "--check", "app.worker.WorkerSettings"]
-#     interval: 30s
-#     timeout: 5s
-#     retries: 3
-#   restart: unless-stopped
-
 volumes:
   redis_data:
+  db_data:

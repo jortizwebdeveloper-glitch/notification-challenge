@@ -5,7 +5,7 @@ from src.shared.channels import ChannelData, get_channel
 from src.shared.errors import validation_error_handle
 
 REDIS_SETTINGS = RedisSettings(
-    host="localhost",
+    host="redis",
     port=6379,
     database=0,
     password=None,
