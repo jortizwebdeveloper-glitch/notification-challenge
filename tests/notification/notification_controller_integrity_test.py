@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy import insert, select
 
 from src.modules.notification import NotificationModel
-from src.modules.users import UserModel
+from src.modules.user import UserModel
 from src.shared.jwt import create_token_jwt
 from tests.helpers import addUser
 

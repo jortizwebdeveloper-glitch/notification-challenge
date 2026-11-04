@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy.orm import Session
 
 from src.modules.auth import AuthRepository, AuthUOW
-from src.modules.users import UserRepository
+from src.modules.user import UserRepository
 
 EMAIL = "test@email.com"
 PASSWORD = "hash"

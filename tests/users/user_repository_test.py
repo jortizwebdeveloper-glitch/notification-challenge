@@ -1,6 +1,6 @@
 import pytest
 
-from src.modules.users import UserModel, UserRepository
+from src.modules.user import UserModel, UserRepository
 from src.shared.errors.exceptions import AlreadyExistsError
 from tests.helpers import addUser
 

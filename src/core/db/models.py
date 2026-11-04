@@ -1,5 +1,6 @@
 from src.modules.auth import AuthModel
 from src.modules.notification import NotificationModel
-from src.modules.users import UserModel
+from src.modules.send import SendModel
+from src.modules.user import UserModel
 
-__all__ = ["AuthModel", "NotificationModel", "UserModel"]
+__all__ = ["AuthModel", "NotificationModel", "SendModel", "UserModel"]

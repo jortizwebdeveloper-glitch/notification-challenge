@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from src.modules.users import UserRepoDep
+from src.modules.user import UserRepoDep
 from src.shared.depends import SessionDep
 
 from ..infra.repository import AuthRepository, AuthRepositoryPort

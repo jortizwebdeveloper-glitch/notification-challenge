@@ -7,5 +7,9 @@ class Settings(BaseSettings):
     DATABASE_URL: str
     SECRET_KEY_JWT: str
 
+    DB_USER: str
+    DB_PASS: str
+    DB_NAME: str
+
 
 settings = Settings()

@@ -1,5 +1,5 @@
 from src.modules.auth import AuthModel
-from src.modules.users import UserModel
+from src.modules.user import UserModel
 
 
 def addUser(session, email):

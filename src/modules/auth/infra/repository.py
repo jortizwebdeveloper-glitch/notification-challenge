@@ -1,7 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session, joinedload, load_only
 
-from src.modules.users import UserModel
+from src.modules.user import UserModel
 
 from ..schema.ports import AuthRepositoryPort
 from .model import AuthModel
