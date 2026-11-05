@@ -62,7 +62,7 @@ services:
   test:
     build:
       context: .
-      target: testdoc
+      target: test
     environment:
       TESTCONTAINERS_HOST_OVERRIDE: host.docker.internal
       <<: *env

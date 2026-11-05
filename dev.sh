@@ -66,7 +66,7 @@ case "$cmd" in
     ;;
   test)
     require_docker
-    docker compose run --rm test  
+    docker compose run --build --rm test  
     ;;
   build)
     require_docker
