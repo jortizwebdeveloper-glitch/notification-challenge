@@ -17,7 +17,7 @@ from main import app
 from src.core.arq import get_arq
 from src.core.db import get_session
 from src.shared.settings import settings
-from src.shared.worker import WorkerSettings
+from src.shared.workers.worker import WorkerSettings
 
 
 @pytest.fixture(scope="session")

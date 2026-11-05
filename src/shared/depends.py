@@ -5,7 +5,8 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from src.core.arq import get_arq
-from src.core.db import get_session
+from src.core.db import get_async_session, get_session
 
 SessionDep = Annotated[Session, Depends(get_session)]
+AsyncSessionDep = Annotated[Session, Depends(get_async_session)]
 ArqDep = Annotated[ArqRedis, Depends(get_arq)]

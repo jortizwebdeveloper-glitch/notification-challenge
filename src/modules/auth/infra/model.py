@@ -18,4 +18,4 @@ class AuthModel(Base):
         index=True,
     )
     password: Mapped[str] = mapped_column(Text)
-    user: Mapped[UserModel] = relationship(back_populates="auth")
+    user: Mapped["UserModel"] = relationship(back_populates="auth") # noqa: UP037

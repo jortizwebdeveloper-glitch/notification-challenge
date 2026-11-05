@@ -5,7 +5,12 @@ x-base: &base
   image: take-home-image
 
 x-env: &env
+  REDIS_HOST: redis
+  DB_USER: ${DB_USER}
+  DB_PASS: ${DB_PASS}
+  DB_NAME: ${DB_NAME}
   DATABASE_URL: postgresql+psycopg://${DB_USER}:${DB_PASS}@db:5432/${DB_NAME}
+  ASYNC_DATABASE_URL: postgresql+asyncpg://${DB_USER}:${DB_PASS}@db:5432/${DB_NAME}
   SECRET_KEY_JWT: ${SECRET_KEY_JWT}
 
 services:
@@ -21,15 +26,29 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+  worker:                                   # nuevo servicio
+    <<: *base
+    command: ["arq", "src.shared.workers.worker.WorkerSettings"]   # ajusta la ruta a tu módulo
+    environment:
+      <<: *env
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "arq", "--check", "src.shared.workers.worker.WorkerSettings"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
   seed:
     <<: *base
     environment:
       <<: *env
     command: ["poe", "seed", "users"]
     profiles: ["seed"]
-    depends_on:
-      migrate:
-        condition: service_completed_successfully
+  
   migrate:
     <<: *base
     command: ["alembic", "upgrade", "head"]
@@ -68,8 +87,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  
   redis:
     image: redis:7-alpine
+    ports:
+      - "6379:6379"
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data

@@ -1,7 +1,12 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.modules.user import UserModel
+
 from datetime import datetime
 
 from sqlalchemy import DateTime, ForeignKey, String, Text, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.core.db import Base
 
@@ -20,4 +25,6 @@ class SendModel(Base):
         DateTime(timezone=True), server_default=func.now()
     )
     status: Mapped[str] = mapped_column(Text)
-    log: Mapped[str] = mapped_column(Text)
+    log: Mapped[str] = mapped_column(Text, nullable=True)
+    user: Mapped["UserModel"] = relationship(back_populates="sends")  # noqa: UP037
+

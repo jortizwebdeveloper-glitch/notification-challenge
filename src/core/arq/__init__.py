@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 
 from arq import create_pool
-from src.shared.worker import REDIS_SETTINGS
+from src.shared.workers.settings import REDIS_SETTINGS
 
 
 async def arq_pool(app: FastAPI):

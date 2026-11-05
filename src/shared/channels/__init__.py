@@ -20,9 +20,13 @@ class ChannelData(BaseModel):
     to: str | None = None
 
 
-class EmailModel(BaseModel):
+class ChannelModel(BaseModel):
     title: str
     content: str
+    to: str
+
+
+class EmailModel(ChannelModel):
     to: EmailField | None = None
 
     @field_validator("content", mode="after")
@@ -31,14 +35,12 @@ class EmailModel(BaseModel):
         return markdown.markdown(value)
 
 
-class SMSModel(BaseModel):
-    title: str
+class SMSModel(ChannelModel):
     content: str = Field(max_length=160)
     to: PhoneField | None = None
 
 
-class PushModel(BaseModel):
-    title: str
+class PushModel(ChannelModel):
     content: str = Field(max_length=160)
     to: TokenFcmField | None = None
 
@@ -53,7 +55,7 @@ class BaseChannel(ABC):
     def src(self) -> str:
         pass
 
-    async def send(self):
+    async def send(self) -> ChannelModel:
         payload = await asyncio.to_thread(self.validate, self._row)
         return payload
 
@@ -87,7 +89,11 @@ class PushNotificationChannel(BaseChannel):
         return PushModel(title=row.title, content=row.content, to=row.to)
 
 
-channels = {Channel.EMAIL: EmailChannel, Channel.SMS: SMSChannel, Channel.PUSH_NOTIFICATION: PushNotificationChannel}
+channels = {
+    Channel.EMAIL: EmailChannel,
+    Channel.SMS: SMSChannel,
+    Channel.PUSH_NOTIFICATION: PushNotificationChannel,
+}
 
 
 def get_channel(row: ChannelData) -> BaseChannel:

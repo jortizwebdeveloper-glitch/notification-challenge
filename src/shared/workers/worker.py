@@ -1,40 +1,51 @@
-from arq.connections import RedisSettings
 from pydantic_core import ValidationError
 
+import src.core.db.models  # noqa: F401
+from src.core.db import scope_async_session
+from src.modules.send import SendData, SendRepository
 from src.shared.channels import ChannelData, get_channel
 from src.shared.errors import validation_error_handle
 
-REDIS_SETTINGS = RedisSettings(
-    host="redis",
-    port=6379,
-    database=0,
-    password=None,
-)
+from .settings import REDIS_SETTINGS
+
+SEND_REPO = "send_repo"
 
 
 async def startup(ctx):
-    # abrir conexiones a DB, clientes HTTP, etc.
-    ctx["session"] = "mi-recurso"
-
-
-async def shutdown(ctx):
-    # cerrar recursos
     pass
 
 
-async def send_notification(ctx, data: ChannelData):
+async def shutdown(ctx):
+    pass
+
+
+async def send_notification(ctx, payload):
+
+    data: ChannelData = payload["data"]
+    user_id: int = payload["user_id"]
+    body = SendData(data.model_dump())
     try:
         channel = get_channel(data)
         result = await channel.send()
-        print(result.to)
+        body["content"] = result.content
+        body["status"] = "success"
+
     except ValidationError as exc:
         errors = validation_error_handle(exc)
-        print(errors)
+        body["status"] = "validation_error"
+        body["log"] = str(errors)
         raise
 
     except Exception as e:
-        print(e)
+        body["status"] = "error"
+        body["log"] = str(e)
         raise
+
+    finally:
+        print(body)
+        async with scope_async_session() as session:
+            sends = SendRepository(async_session=session)
+            await sends.async_create(body, user_id)
 
     return "Finish"
 

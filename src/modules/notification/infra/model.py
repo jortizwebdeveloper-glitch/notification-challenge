@@ -20,4 +20,4 @@ class NotificationModel(Base):
         ForeignKey("users.id", name="notification_user_foreign_key_constraint"),
         index=True,
     )
-    user: Mapped[UserModel] = relationship(back_populates="notifications")
+    user: Mapped["UserModel"] = relationship(back_populates="notifications")  # noqa: UP037
