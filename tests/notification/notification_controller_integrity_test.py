@@ -1,10 +1,7 @@
 import pytest
-from sqlalchemy import insert, select
 
-from src.modules.notification import NotificationModel
-from src.modules.user import UserModel
 from src.shared.jwt import create_token_jwt
-from tests.helpers import addUser
+from tests.helpers import addNotification, addUser, getUser
 
 EMAIL = "test@mail.com"
 ENDPOINT = "/notifications"
@@ -30,14 +27,12 @@ NOTIFICATION_MOCKS: list[dict] = [
 
 @pytest.fixture
 def jwt_token(session):
-    user = session.scalars(
-        select(UserModel).where(UserModel.email == EMAIL)
-    ).one_or_none()
+    user = getUser(session, EMAIL)
     if not user:
         user = addUser(session, email=EMAIL)
         for item in NOTIFICATION_MOCKS:
             item["user_id"] = user.id
-            session.scalars(insert(NotificationModel).values(item))
+            addNotification(session, item)
         session.expunge_all()
 
     token = create_token_jwt(str(user.id))

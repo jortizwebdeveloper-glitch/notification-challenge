@@ -24,6 +24,7 @@ async def send_notification(ctx, payload):
     data: ChannelData = payload["data"]
     user_id: int = payload["user_id"]
     body = SendData(data.model_dump())
+    body["job_id"] = ctx["job_id"]
     try:
         channel = get_channel(data)
         result = await channel.send()
@@ -42,9 +43,8 @@ async def send_notification(ctx, payload):
         raise
 
     finally:
-        print(body)
         async with scope_async_session() as session:
-            sends = SendRepository(async_session=session)
+            sends = SendRepository(async_session=session, session=None)
             await sends.async_create(body, user_id)
 
     return "Finish"

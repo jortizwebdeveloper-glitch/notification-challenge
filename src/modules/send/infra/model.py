@@ -17,6 +17,7 @@ class SendModel(Base):
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.id", name="send_user_fk_constraint"), index=True
     )
+    job_id: Mapped[str] = mapped_column(Text)
     to: Mapped[str] = mapped_column(Text)
     title: Mapped[str] = mapped_column(String(50))
     content: Mapped[str] = mapped_column(Text)

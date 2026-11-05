@@ -7,4 +7,5 @@ class SendData(TypedDict, total=False):
     content: str
     channle: str
     status: str
+    job_id: str
     log: str | None = None
