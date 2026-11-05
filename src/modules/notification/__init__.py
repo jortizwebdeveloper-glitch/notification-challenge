@@ -1,5 +1,4 @@
 from .controller.depends import NotiRepositoryDep, get_noti_service
-from .controller.router import notification
 from .infra.model import NotificationModel
 from .infra.repository import NotificationRepository
 from .schema.ports import NotificationRepositoryPort
@@ -12,5 +11,4 @@ __all__ = [
     "NotificationRepositoryPort",
     "NotificationService",
     "get_noti_service",
-    "notification"
 ]

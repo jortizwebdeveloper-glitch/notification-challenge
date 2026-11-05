@@ -1,5 +1,8 @@
+import asyncio
+
 from fastapi import APIRouter
 
+from src.modules.send import SendServiceDep
 from src.shared.auth import CurrentUserDep
 
 from ..schema.dto import (
@@ -21,13 +24,26 @@ def get_notifications(payload: CurrentUserDep, noti_service: NotiServiceDep):
 
 
 @notification.post("")
-def create_notification(
+async def create_notification(
     payload: CurrentUserDep,
     body: CreateNotificationRequest,
     noti_service: NotiServiceDep,
+    send_service: SendServiceDep,
+    send: bool = False,
 ):
     data = NotificationData(**body.model_dump())
-    return noti_service.create_notification_by_user(data, int(payload["sub"]))
+    user_id = int(payload["sub"])
+    noti = await asyncio.to_thread(
+        lambda: noti_service.create_notification_by_user(data, user_id)
+    )
+
+    response = {"notification": noti}
+
+    if send:
+        jobs_ids = await send_service.send_notification_by_id(noti.id, user_id)
+        response["jobs_ids"] = jobs_ids["job_ids"]
+
+    return response
 
 
 item = APIRouter(prefix="/{id}")
