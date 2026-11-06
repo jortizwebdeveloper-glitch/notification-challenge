@@ -1,10 +1,10 @@
+from src.modules.user import UserRepositoryPort
 from src.shared.auth import create_hash, verify_hash
 from src.shared.errors import AuthenticationError
 from src.shared.jwt import create_token_jwt
 
 from ..infra.uow import AuthUOW
 from ..schema.ports import AuthRepositoryPort
-from src.modules.user import UserRepositoryPort
 
 
 class AuthService:
