@@ -1,7 +1,7 @@
 [project]
 name = "take-home-challenge"
 version = "0.1.0"
-description = "Add your description here"
+description = "API REST para crear notificaciones y enviarlas por email, SMS o push"
 readme = "README.md"
 authors = [{ name = "Jortiz", email = "jortiz.webdeveloper@gmail.com" }]
 requires-python = ">=3.14"

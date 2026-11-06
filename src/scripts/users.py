@@ -57,7 +57,7 @@ NOTIFICATION_MOCKS: list[dict] = [
     {
         "title": "Nuevo mensaje",
         "content": "Ana te envió un mensaje: '¿Revisaste el documento?'",
-        "channel": "in_app",
+        "channel": "push",
     },
     {
         "title": "Suscripción por vencer",
@@ -77,7 +77,7 @@ NOTIFICATION_MOCKS: list[dict] = [
     {
         "title": "Te mencionaron en un comentario",
         "content": "Carlos te mencionó en la tarea 'Diseño del login'.",
-        "channel": "in_app",
+        "channel": "push",
     },
     {
         "title": "Intento de acceso fallido",
@@ -92,7 +92,7 @@ NOTIFICATION_MOCKS: list[dict] = [
     {
         "title": "Tarea asignada",
         "content": "Se te asignó la tarea 'Integrar pasarela de pagos'.",
-        "channel": "in_app",
+        "channel": "push",
     },
     {
         "title": "Mantenimiento programado",
@@ -107,7 +107,7 @@ NOTIFICATION_MOCKS: list[dict] = [
     {
         "title": "Nuevo seguidor",
         "content": "Laura comenzó a seguirte.",
-        "channel": "in_app",
+        "channel": "push",
     },
     {
         "title": "Encuesta de satisfacción",

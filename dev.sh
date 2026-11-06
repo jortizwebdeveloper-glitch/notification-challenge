@@ -12,10 +12,11 @@ Comandos:
   down        Detiene y elimina los contenedores
   ps          Muestra el estado de los servicios
   logs [svc]  Sigue los logs de un servicio (por defecto: api)
+  build [svc] Construye las imágenes
   rebuild     Reconstruye las imágenes desde cero, sin caché
   migrate     Aplica las migraciones
   seed        Carga los datos de ejemplo
-  test [args] Ejecuta los tests en el host (requiere uv)
+  test        Ejecuta los tests en un contenedor
   psql        Abre una consola de Postgres
   shell       Abre una terminal dentro del contenedor de la API
   reset       Borra todo, incluidos los datos, y levanta de nuevo
@@ -66,7 +67,7 @@ case "$cmd" in
     ;;
   test)
     require_docker
-    docker compose run --build --rm test  
+    docker compose run --build --rm test
     ;;
   build)
     require_docker

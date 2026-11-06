@@ -10,7 +10,7 @@ class SigninRequest(BaseModel):
     )
     password: str = Field(
         description="Contraseña del usuario registrado",
-        examples=["Secreta123"],
+        examples=["Secreta123!"],
     )
 
 
@@ -21,5 +21,5 @@ class SignupRequest(BaseModel):
     )
     password: PasswordField = Field(
         description="La contraseña debe contar con: Mínimo 8 caracteres de longitud, una letra minúscula, una letra mayúscula, un número, un carácter especial (símbolo)",
-        examples=["Secreta123"],
+        examples=["Secreta123!"],
     )
