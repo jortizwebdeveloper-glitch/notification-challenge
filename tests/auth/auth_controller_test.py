@@ -14,13 +14,13 @@ def auth_service():
     app.dependency_overrides.clear()
 
 
-async def test_auth_signup_status_200(client, auth_service):
+async def test_auth_signup_status_201(client, auth_service):
     msg = "Registro relaizado exitosamente"
     auth_service.signup_user.return_value = {"msg": msg}
 
     data = {"email": "test@test.com", "password": "Password@123"}
     response = await client.post("/signup", data=data)
-    assert response.status_code == 200
+    assert response.status_code == 201
     assert response.json()["msg"] == msg
 
 

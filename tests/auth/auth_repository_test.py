@@ -19,7 +19,7 @@ def test_auth_repository_find_by_email_success(session, auth_repository):
     session.expunge_all()  # fuerza a que la consulta cargue desde la BD
 
     # Act
-    result = auth_repository.find_by_email(EMAIL)
+    result = auth_repository.find_by_user_id(user.id)
     # Assert
     assert result is not None
     assert result.password == PASSWORD

@@ -18,8 +18,8 @@ def get_auth_uow(s: SessionDep, a: AuthRepoDep, u: UserRepoDep):
     return AuthUOW(session=s, auth_repo=a, user_repo=u)
 
 
-def get_auth_service(a: AuthRepoDep, uow: AuthUowDep):
-    return AuthService(auth_repo=a, auth_uow=uow)
+def get_auth_service(a: AuthRepoDep, uow: AuthUowDep, u: UserRepoDep):
+    return AuthService(auth_repo=a, auth_uow=uow, user_repo=u)
 
 
 AuthRepoDep = Annotated[AuthRepositoryPort, Depends(get_auth_repository)]

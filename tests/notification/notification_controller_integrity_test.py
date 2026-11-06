@@ -54,11 +54,13 @@ async def test_create_notifications_email_status_200(client, jwt_token):
 
     assert res.status_code == 200
     data = res.json()
-    assert "id" in data
+    assert "notification" in data
+
+    notification = data["notification"]
     assert json["channel"] == "email"
-    assert json["title"] == data["title"]
-    assert json["content"] == data["content"]
-    assert json["channel"] == data["channel"]
+    assert json["title"] == notification["title"]
+    assert json["content"] == notification["content"]
+    assert json["channel"] == notification["channel"]
 
 
 async def test_get_all_notifications_status_200(client, jwt_token):
