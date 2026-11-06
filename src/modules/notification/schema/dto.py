@@ -28,3 +28,15 @@ class NotificationData(TypedDict, total=False):
     title: str
     content: str
     channle: Channel
+
+
+class ResponseNotification(BaseModel):
+    id: int
+    title: str
+    content: str
+    channel: str
+
+
+class ResponseCreateNotification(BaseModel):
+    notification: ResponseNotification
+    jobs_ids: list[str] | None = None

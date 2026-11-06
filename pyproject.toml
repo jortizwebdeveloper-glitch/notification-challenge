@@ -34,6 +34,8 @@ PYTHONPATH = "."
 [tool.poe.tasks]
 "mg:current" = "alembic current"
 "worker" = "arq src.shared.workers.worker.WorkerSettings"
+"ruff" = "ruff check"
+"ruff:fix" = "ruff check --fix"
 
 [tool.poe.tasks.seed]
 cmd = "python src/scripts/${file}.py"

@@ -44,18 +44,23 @@ class NotificationRepository(NotificationRepositoryPort):
         return row
 
     def update(self, body: NotificationData, id: int, user_id: int):
-        stmt = (
-            update(NotificationModel)
-            .values(**body)
-            .options(defer(NotificationModel.user_id))
-            .where(NotificationModel.id == id, NotificationModel.user_id == user_id)
-            .returning(NotificationModel)
-        )
-        row = self._session.scalars(stmt).one_or_none()
-        self._session.commit()
-        self._session.refresh(row)
+        try:
+            stmt = (
+                update(NotificationModel)
+                .values(**body)
+                .options(defer(NotificationModel.user_id))
+                .where(NotificationModel.id == id, NotificationModel.user_id == user_id)
+                .returning(NotificationModel)
+            )
+            row = self._session.scalars(stmt).one_or_none()
+            if row:
+                self._session.commit()
+                self._session.refresh(row)
 
-        return row
+            return row
+        except Exception as e:
+            print("JORGE", type(e))
+            raise
 
     def delete(self, id, user_id) -> int:
         stmt = delete(NotificationModel).where(
